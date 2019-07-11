@@ -2,11 +2,14 @@ package com.github.chenhao96.controller;
 
 import com.github.chenhao96.service.ServiceResult;
 import com.github.chenhao96.utils.controller.DatePropertyEditorSupport;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseController extends AbstractController {
 
@@ -34,5 +37,20 @@ public abstract class BaseController extends AbstractController {
     @SuppressWarnings("unchecked")
     protected <T> T getSessionAttribute(String key) {
         return (T) getSession().getAttribute(key);
+    }
+
+    protected Map<String, String> getRequestParam() {
+        return getRequestParam(getRequest().getParameterMap());
+    }
+
+    public static Map<String, String> getRequestParam(Map<String, String[]> reqMap) {
+        if (CollectionUtils.isEmpty(reqMap)) return null;
+        Map<String, String> resultMap = new HashMap<>(reqMap.size());
+        for (Map.Entry<String, String[]> entry : reqMap.entrySet()) {
+            String[] values = entry.getValue();
+            if (values == null || values.length == 0) continue;
+            resultMap.put(entry.getKey(), values[0]);
+        }
+        return resultMap;
     }
 }
