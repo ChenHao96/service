@@ -13,6 +13,9 @@ import java.util.Map;
 
 public abstract class BaseController extends AbstractController {
 
+    public static final String CLIENT_IP_KEY = "AbstractController_CLIENT_IP";
+    public static final String CLIENT_PORT_KEY = "AbstractController_CLIENT_PORT";
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new DatePropertyEditorSupport());
@@ -53,4 +56,13 @@ public abstract class BaseController extends AbstractController {
         }
         return resultMap;
     }
+
+    protected String getRequestClientIP() {
+        return (String) getRequest().getAttribute(CLIENT_IP_KEY);
+    }
+
+    protected int getRequestClientPort() {
+        return (int) getRequest().getAttribute(CLIENT_PORT_KEY);
+    }
+
 }
