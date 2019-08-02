@@ -12,9 +12,9 @@ import java.util.Map;
 
 public abstract class AbstractInterceptor implements HandlerInterceptor {
 
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Object handler) throws Exception {
+    public static final String USER_NAME = "userName";
+
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return true;
     }
 

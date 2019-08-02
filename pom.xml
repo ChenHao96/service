@@ -7,12 +7,12 @@
     <groupId>com.github.chenhao96</groupId>
     <artifactId>service</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <modules>
         <module>utils</module>
         <module>commons-core</module>
-        <module>login</module>
+        <module>auth</module>
     </modules>
 
     <url>https://github.com/ChenHao96/service</url>
@@ -95,7 +95,13 @@
             <dependency>
                 <groupId>com.github.chenhao96</groupId>
                 <artifactId>commons-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>login</artifactId>
+                <groupId>com.github.chenhao96</groupId>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
