@@ -20,8 +20,8 @@
         </dependency>
 
         <dependency>
-            <artifactId>login</artifactId>
             <groupId>com.github.chenhao96</groupId>
+            <artifactId>commons-core</artifactId>
         </dependency>
     </dependencies>
 

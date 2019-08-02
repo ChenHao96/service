@@ -97,12 +97,6 @@
                 <artifactId>commons-core</artifactId>
                 <version>1.0.1-SNAPSHOT</version>
             </dependency>
-
-            <dependency>
-                <artifactId>login</artifactId>
-                <groupId>com.github.chenhao96</groupId>
-                <version>1.0.1-SNAPSHOT</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
