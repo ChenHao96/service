@@ -15,28 +15,32 @@
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select <include refid="Base_Column_List"/>
-        from rolePermission where id = #{id,jdbcType=INTEGER}
+        select
+        <include refid="Base_Column_List"/>
+        from QPManagerPlatformDB.dbo.rolePermission
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="queryUrlsByUserId" resultType="java.lang.String" parameterType="java.lang.Integer">
-        select r.url from rolePermission p left join users u on u.roleName_id = p.roleName_id
-        left join roleUrl r on r.id = p.roleUrl_id where u.id = #{userID,jdbcType=INTEGER}
+        select r.url from QPManagerPlatformDB.dbo.rolePermission p
+        left join QPManagerPlatformDB.dbo.users u on u.roleName_id = p.roleName_id
+        left join QPManagerPlatformDB.dbo.roleUrl r on r.id = p.roleUrl_id
+        where u.id = #{userID,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-      delete from rolePermission where id = #{id,jdbcType=INTEGER}
+      delete from QPManagerPlatformDB.dbo.rolePermission where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.github.chenhao96.model.po.RolePermission" useGeneratedKeys="true" keyColumn="id"
             keyProperty="id">
-    insert into rolePermission (roleName_id, roleUrl_id, updateAt, createAt)
+    insert into QPManagerPlatformDB.dbo.rolePermission (roleName_id, roleUrl_id, updateAt, createAt)
     values ( #{roleNameId,jdbcType=INTEGER}, #{roleUrlId,jdbcType=INTEGER},
       #{updateAt,jdbcType=INTEGER}, #{createAt,jdbcType=INTEGER})
   </insert>
 
     <select id="countList" resultType="java.lang.Long" parameterType="com.github.chenhao96.model.bo.RolePermissionBo">
-        select count(id) from rolePermission
+        select count(id) from QPManagerPlatformDB.dbo.rolePermission
         <where>
             <if test="roleNameId != null and roleNameId != ''">
                 and roleName_id = #{roleNameId,jdbcType=INTEGER}
@@ -63,10 +67,13 @@
     </resultMap>
 
     <select id="pageList" parameterType="com.github.chenhao96.model.bo.RolePermissionBo" resultMap="RolePermissionVoMap">
-        select per.id, ur.url, ur.urlName, r.roleName, u.userName as updateAtStr, u2.userName as createAtStr
-        from rolePermission per LEFT JOIN roleName r on r.id = per.roleName_id
-        LEFT JOIN roleUrl ur on ur.id = per.roleUrl_id LEFT JOIN users u on u.id = per.updateAt
-        LEFT JOIN users u2 on u2.id = per.createAt
+        select id,url,urlName,roleName,updateAtStr,createAtStr from (select ROW_NUMBER() Over(order by per.id) as rowId,
+        per.id, ur.url, ur.urlName, r.roleName, u.userName as updateAtStr, u2.userName as createAtStr
+        from QPManagerPlatformDB.dbo.rolePermission per
+        LEFT JOIN QPManagerPlatformDB.dbo.roleName r on r.id = per.roleName_id
+        LEFT JOIN QPManagerPlatformDB.dbo.roleUrl ur on ur.id = per.roleUrl_id
+        LEFT JOIN QPManagerPlatformDB.dbo.users u on u.id = per.updateAt
+        LEFT JOIN QPManagerPlatformDB.dbo.users u2 on u2.id = per.createAt
         <where>
             <if test="roleNameId != null and roleNameId != ''">
                 and per.roleName_id = #{roleNameId,jdbcType=INTEGER}
@@ -81,27 +88,27 @@
                 and per.createAt = #{createAt,jdbcType=INTEGER}
             </if>
         </where>
+        ) as tmp where rowId between #{page,jdbcType=INTEGER} and #{rows,jdbcType=INTEGER}
         <if test="sort != null and sort != '' and order != null and order != ''">
             order by ${sort} ${order}
         </if>
-        LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
     </select>
 
     <delete id="batchDelete">
-        DELETE FROM rolePermission WHERE id in
+        DELETE FROM QPManagerPlatformDB.dbo.rolePermission WHERE id in
         <foreach collection="array" item="permissionId" index="index" open="(" close=")" separator=",">
             #{permissionId,jdbcType=INTEGER}
         </foreach>
     </delete>
 
     <delete id="batchDelete4RoleName">
-        DELETE FROM rolePermission WHERE roleName_id in
+        DELETE FROM QPManagerPlatformDB.dbo.rolePermission WHERE roleName_id in
         <foreach collection="list" item="roleName" index="index" open="(" close=")" separator=",">
             #{roleName,jdbcType=INTEGER}
         </foreach>
     </delete>
 
     <select id="queryExistPermissionId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select roleUrl_id from rolePermission where roleName_id = #{roleNameId,jdbcType=INTEGER}
+        select roleUrl_id from QPManagerPlatformDB.dbo.rolePermission where roleName_id = #{roleNameId,jdbcType=INTEGER}
     </select>
 </mapper>

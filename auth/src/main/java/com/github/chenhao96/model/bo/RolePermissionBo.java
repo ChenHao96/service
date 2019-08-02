@@ -2,7 +2,7 @@ package com.github.chenhao96.model.bo;
 
 import java.util.Arrays;
 
-public class RolePermissionBo extends PageBo {
+public class RolePermissionBo extends PageParamBo {
 
     private Integer id;
 

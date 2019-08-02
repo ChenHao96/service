@@ -19,34 +19,36 @@
     </sql>
 
     <select id="selectUserPasswordById" resultType="java.lang.String" parameterType="java.lang.Integer">
-        select password from users where id = #{id,jdbcType=INTEGER}
+        select password from QPManagerPlatformDB.dbo.users where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectUserPhotoByUserName" resultType="java.lang.String" parameterType="java.lang.String">
-        select photo from users where userName = #{userName,jdbcType=VARCHAR}
+        select photo from QPManagerPlatformDB.dbo.users where userName = #{userName,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select <include refid="Base_Column_List"/>
-        from users where id = #{id,jdbcType=INTEGER}
+        select
+        <include refid="Base_Column_List"/>
+        from QPManagerPlatformDB.dbo.users where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select <include refid="Base_Column_List"/>
-        from users where userName = #{userName,jdbcType=VARCHAR}
+        select
+        <include refid="Base_Column_List"/>
+        from QPManagerPlatformDB.dbo.users where userName = #{userName,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-      delete from users where id = #{id,jdbcType=INTEGER}
+      delete from QPManagerPlatformDB.dbo.users where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByUserName" parameterType="java.lang.String">
-      delete from users where userName = #{userName,jdbcType=VARCHAR}
+      delete from QPManagerPlatformDB.dbo.users where userName = #{userName,jdbcType=VARCHAR}
     </delete>
 
     <insert id="insertSelective" parameterType="com.github.chenhao96.model.po.Users" useGeneratedKeys="true" keyProperty="id"
             keyColumn="id">
-        insert into users
+        insert into QPManagerPlatformDB.dbo.users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userName != null">
                 userName,
@@ -102,7 +104,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.github.chenhao96.model.po.Users">
-        update users
+        update QPManagerPlatformDB.dbo.users
         <set>
             <if test="userName != null">
                 userName = #{userName,jdbcType=VARCHAR},
@@ -130,11 +132,11 @@
     </update>
 
     <select id="userList" resultMap="BaseResultMap">
-         select id,userName from users
+         select id,userName from QPManagerPlatformDB.dbo.users
     </select>
 
     <select id="countList" resultType="java.lang.Long" parameterType="com.github.chenhao96.model.bo.AdminBo">
-        select count(id) from users
+        select count(id) from QPManagerPlatformDB.dbo.users
         <where>
             <if test="userName != null and userName != ''">
                 <choose>
@@ -189,10 +191,14 @@
     </resultMap>
 
     <select id="pageList" resultMap="AdminVoMap" parameterType="com.github.chenhao96.model.bo.AdminBo">
-        select u.id, u.userName, u.nikeName, u.phoneNumber, rn.roleName,
+        select id, userName, nikeName, phoneNumber, roleName, updateAtStr, createAtStr from (
+        select ROW_NUMBER() Over(order by u.id) as rowId,
+        u.id, u.userName, u.nikeName, u.phoneNumber, rn.roleName,
         u1.userName as updateAtStr,u2.userName as createAtStr
-        from users u LEFT JOIN roleName rn on rn.id = u.roleName_id
-        LEFT JOIN users u1 on u1.id = u.updateAt LEFT JOIN users u2 on u2.id = u.createAt
+        from QPManagerPlatformDB.dbo.users u
+        LEFT JOIN QPManagerPlatformDB.dbo.roleName rn on rn.id = u.roleName_id
+        LEFT JOIN QPManagerPlatformDB.dbo.users u1 on u1.id = u.updateAt
+        LEFT JOIN QPManagerPlatformDB.dbo.users u2 on u2.id = u.createAt
         <where>
             <if test="userName != null and userName != ''">
                 <choose>
@@ -234,14 +240,14 @@
                 and u.createAt = #{createAt,jdbcType=INTEGER}
             </if>
         </where>
+        ) as tmp where rowId between #{page,jdbcType=INTEGER} and #{rows,jdbcType=INTEGER}
         <if test="sort != null and sort != '' and order != null and order != ''">
             order by ${sort} ${order}
         </if>
-        LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
     </select>
 
     <delete id="batchDelete">
-        delete from users where id in
+        delete from QPManagerPlatformDB.dbo.users where id in
         <foreach collection="array" item="userId" index="index" open="(" close=")" separator=",">
             #{userId,jdbcType=INTEGER}
         </foreach>

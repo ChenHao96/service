@@ -1,6 +1,6 @@
 package com.github.chenhao96.model.bo;
 
-public class AdminBo extends PageBo {
+public class AdminBo extends PageParamBo {
 
     private Integer id;
 

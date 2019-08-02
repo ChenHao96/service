@@ -16,8 +16,6 @@ public interface RoleUrlMapper {
 
     int updateByPrimaryKeySelective(RoleUrl record);
 
-    List<RoleUrl> selectTop100();
-
     List<RoleUrlVo> urlList();
 
     long countList(RoleUrlBo bo);

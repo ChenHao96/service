@@ -14,30 +14,33 @@
     </sql>
 
     <select id="selectByCreateAt" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select <include refid="Base_Column_List"/>
-        from roleName where createAt = #{createAt,jdbcType=INTEGER}
+        select
+        <include refid="Base_Column_List"/>
+        from QPManagerPlatformDB.dbo.roleName
+        where createAt = #{createAt,jdbcType=INTEGER}
     </select>
 
     <select id="queryRoleNameById" resultType="java.lang.String" parameterType="java.lang.Integer">
-        select roleName from roleName where id = #{id,jdbcType=INTEGER}
+        select roleName from QPManagerPlatformDB.dbo.roleName where id = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-      delete from roleName where id = #{id,jdbcType=INTEGER}
+      delete from QPManagerPlatformDB.dbo.roleName where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.github.chenhao96.model.po.RoleName">
-        insert into roleName (roleName, updateAt, createAt)
+        insert into QPManagerPlatformDB.dbo.roleName (roleName, updateAt, createAt)
         values (#{roleName,jdbcType=VARCHAR}, #{updateAt,jdbcType=INTEGER}, #{createAt,jdbcType=INTEGER})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.github.chenhao96.model.po.RoleName">
-        update roleName set roleName = #{roleName,jdbcType=VARCHAR},
-        updateAt = #{updateAt,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
+        update QPManagerPlatformDB.dbo.roleName
+        set roleName = #{roleName,jdbcType=VARCHAR}, updateAt = #{updateAt,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="countList" resultType="java.lang.Long" parameterType="com.github.chenhao96.model.bo.RoleNameBo">
-        select count(id) from roleName
+        select count(id) from QPManagerPlatformDB.dbo.roleName
         <where>
             <if test="roleName != null and roleName != ''">
                 <choose>
@@ -66,9 +69,11 @@
     </resultMap>
 
     <select id="pageList" resultMap="RoleNameVoMap" parameterType="com.github.chenhao96.model.bo.RoleNameBo">
-        select roleName.id, roleName.roleName, u.userName as updateAtStr, u2.userName as createAtStr
-        from roleName roleName LEFT JOIN users u on u.id = roleName.updateAt
-        LEFT JOIN users u2 on u2.id = roleName.createAt
+        select id,roleName,updateAtStr,createAtStr from (select ROW_NUMBER() Over(order by roleName.id) as rowId,
+        roleName.id, roleName.roleName, u.userName as updateAtStr, u2.userName as createAtStr
+        from QPManagerPlatformDB.dbo.roleName roleName
+        LEFT JOIN QPManagerPlatformDB.dbo.users u on u.id = roleName.updateAt
+        LEFT JOIN QPManagerPlatformDB.dbo.users u2 on u2.id = roleName.createAt
         <where>
             <if test="roleName != null and roleName != ''">
                 <choose>
@@ -87,18 +92,18 @@
                 and roleName.createAt = #{createAt,jdbcType=INTEGER}
             </if>
         </where>
+        ) as tmp where rowId between #{page,jdbcType=INTEGER} and #{rows,jdbcType=INTEGER}
         <if test="sort != null and sort != '' and order != null and order != ''">
             order by ${sort} ${order}
         </if>
-        LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
     </select>
 
     <select id="roleList" resultMap="BaseResultMap">
-        select id,roleName from roleName
+        select id,roleName from QPManagerPlatformDB.dbo.roleName
     </select>
 
     <delete id="batchDelete">
-        DELETE from roleName where id in
+        DELETE from QPManagerPlatformDB.dbo.roleName where id in
         <foreach collection="array" item="roleId" index="index" open="(" close=")" separator=",">
             #{roleId,jdbcType=INTEGER}
         </foreach>

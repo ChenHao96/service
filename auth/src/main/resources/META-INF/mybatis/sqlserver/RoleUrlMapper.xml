@@ -15,12 +15,12 @@
     </sql>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-      delete from roleUrl where id = #{id,jdbcType=INTEGER}
+      delete from QPManagerPlatformDB.dbo.roleUrl where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insertSelective" parameterType="com.github.chenhao96.model.po.RoleUrl" useGeneratedKeys="true"
             keyProperty="id" keyColumn="id">
-        insert into roleUrl
+        insert into QPManagerPlatformDB.dbo.roleUrl
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="urlName != null">
                 urlName,
@@ -52,7 +52,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.github.chenhao96.model.po.RoleUrl">
-        update roleUrl
+        update QPManagerPlatformDB.dbo.roleUrl
         <set>
             <if test="urlName != null">
                 urlName = #{urlName,jdbcType=VARCHAR},
@@ -68,11 +68,11 @@
     </update>
 
     <select id="urlList" resultMap="BaseResultMap">
-        select id, urlName from roleUrl
+        select id, urlName from QPManagerPlatformDB.dbo.roleUrl
     </select>
 
     <select id="countList" resultType="java.lang.Long" parameterType="com.github.chenhao96.model.bo.RoleUrlBo">
-        select count(id) from roleUrl
+        select count(id) from QPManagerPlatformDB.dbo.roleUrl
         <where>
             <if test="urlName != null and urlName != ''">
                 <choose>
@@ -112,8 +112,11 @@
     </resultMap>
 
     <select id="pageList" parameterType="com.github.chenhao96.model.bo.RoleUrlBo" resultMap="RoleUrlVoMap">
-        select url.id, url.url, url.urlName, u.userName as updateAtStr, u2.userName as createAtStr
-        from roleUrl url LEFT JOIN users u on u.id = url.updateAt LEFT JOIN users u2 on u2.id = url.createAt
+        select id,url,urlName,updateAtStr,createAtStr from (select ROW_NUMBER() Over(order by url.id) as rowId,
+        url.id, url.url, url.urlName, u.userName as updateAtStr, u2.userName as createAtStr
+        from QPManagerPlatformDB.dbo.roleUrl url
+        LEFT JOIN QPManagerPlatformDB.dbo.users u on u.id = url.updateAt
+        LEFT JOIN QPManagerPlatformDB.dbo.users u2 on u2.id = url.createAt
         <where>
             <if test="urlName != null and urlName != ''">
                 <choose>
@@ -142,14 +145,14 @@
                 and url.createAt = #{createAt,jdbcType=INTEGER}
             </if>
         </where>
+        ) as tmp where rowId between #{page,jdbcType=INTEGER} and #{rows,jdbcType=INTEGER}
         <if test="sort != null and sort != '' and order != null and order != ''">
             order by ${sort} ${order}
         </if>
-        LIMIT #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
     </select>
 
     <delete id="batchDelete">
-        DELETE from roleUrl where id in
+        DELETE from QPManagerPlatformDB.dbo.roleUrl where id in
         <foreach collection="array" item="urlId" index="index" open="(" close=")" separator=",">
             #{urlId,jdbcType=INTEGER}
         </foreach>

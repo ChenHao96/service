@@ -1,6 +1,6 @@
 package com.github.chenhao96.model.bo;
 
-public class RoleNameBo extends PageBo {
+public class RoleNameBo extends PageParamBo {
 
     private Integer id;
 
