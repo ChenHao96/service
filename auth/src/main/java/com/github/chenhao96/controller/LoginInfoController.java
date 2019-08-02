@@ -20,6 +20,7 @@ import com.github.chenhao96.controller.interceptor.LoginSingleProcessInterceptor
 import com.github.chenhao96.model.LoginUserInfo;
 import com.github.chenhao96.service.ServiceResult;
 import com.github.chenhao96.utils.StringUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletContext;
@@ -28,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class LoginInfoController extends BaseController {
+@Controller
+@RequestMapping("/login")
+public class LoginInfoController extends BaseController {
 
     @RequestMapping(value = "/onlineUser")
     public void onlineUser() {
