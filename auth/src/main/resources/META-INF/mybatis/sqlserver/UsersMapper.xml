@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.chenhao96.dao.UsersMapper">
 
-    <resultMap id="BaseResultMap" type="org.steven.chen.model.po.Users">
+    <resultMap id="BaseResultMap" type="com.github.chenhao96.model.po.Users">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="photo" property="photo" jdbcType="VARCHAR"/>
         <result column="userName" property="userName" jdbcType="VARCHAR"/>
