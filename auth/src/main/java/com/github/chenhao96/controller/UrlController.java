@@ -46,7 +46,7 @@ public class UrlController extends BaseController {
     }
 
     @RequestMapping("/urlList")
-    public void urlList() {
+    public void urlList(Integer roleNameId) {
 
         ServiceResult<List<RoleUrlVo>> serviceResult = new ServiceResult<>();
         serviceResult.setResult(true);
@@ -54,7 +54,7 @@ public class UrlController extends BaseController {
         serviceResult.setMessage(HttpStatusEnum.SUCCESS.getDescription());
 
         try {
-            serviceResult = urlService.urlList();
+            serviceResult = urlService.urlList(roleNameId);
         } catch (Exception e) {
             LOGGER.warn("urlList", e);
             serviceResult.setResult(false);

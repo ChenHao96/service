@@ -39,12 +39,12 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public ServiceResult<List<RoleUrlVo>> urlList() {
+    public ServiceResult<List<RoleUrlVo>> urlList(Integer roleNameId) {
         ServiceResult<List<RoleUrlVo>> result = new ServiceResult<>();
         result.setResult(true);
         result.setResponseCode(HttpStatusEnum.SUCCESS.getCode());
         result.setMessage(HttpStatusEnum.SUCCESS.getDescription());
-        result.setReturnData(urlAdaptor.urlList());
+        result.setReturnData(urlAdaptor.urlList(roleNameId));
         return result;
     }
 

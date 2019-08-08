@@ -27,8 +27,8 @@ public class UrlAdaptorImpl implements UrlAdaptor {
     }
 
     @Override
-    public List<RoleUrlVo> urlList() {
-        return roleUrlMapper.urlList();
+    public List<RoleUrlVo> urlList(Integer roleNameId) {
+        return roleUrlMapper.urlList(roleNameId);
     }
 
     @Override

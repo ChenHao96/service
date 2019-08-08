@@ -10,7 +10,7 @@ public interface UrlService {
 
     ServiceResult<PageVo<RoleUrlVo>> pageUrlList(RoleUrlBo bo);
 
-    ServiceResult<List<RoleUrlVo>> urlList();
+    ServiceResult<List<RoleUrlVo>> urlList(Integer roleNameId);
 
     ServiceResult batchDelete(RoleUrlBo[] array);
 

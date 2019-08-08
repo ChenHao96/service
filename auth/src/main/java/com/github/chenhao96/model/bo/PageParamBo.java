@@ -39,6 +39,20 @@ public class PageParamBo {
         this.order = order;
     }
 
+    public void process() {
+        Integer page = getPage();
+        Integer rows = getRows();
+        if (page == null || rows == null) return;
+
+        if (page < 1) {
+            page = 1;
+        }
+        setRows(rows * page);
+
+        page--;
+        setPage((page * rows) + 1);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PageBo{");

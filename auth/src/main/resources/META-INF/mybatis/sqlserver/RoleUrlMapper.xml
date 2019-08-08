@@ -67,8 +67,12 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="urlList" resultMap="BaseResultMap">
-        select id, urlName from QPManagerPlatformDB.dbo.roleUrl
+    <select id="urlList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select ru.id, ru.urlName from QPManagerPlatformDB.dbo.roleUrl ru
+        <if test="param1 != null">
+            left join QPManagerPlatformDB.dbo.rolePermission rp on rp.roleUrl_id = ru.id
+            where rp.roleName_id = #{param1,jdbcType=INTEGER}
+        </if>
     </select>
 
     <select id="countList" resultType="java.lang.Long" parameterType="com.github.chenhao96.model.bo.RoleUrlBo">

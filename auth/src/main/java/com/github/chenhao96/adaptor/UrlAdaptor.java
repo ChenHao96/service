@@ -12,7 +12,7 @@ public interface UrlAdaptor {
 
     List<RoleUrlVo> pageList(RoleUrlBo bo);
 
-    List<RoleUrlVo> urlList();
+    List<RoleUrlVo> urlList(Integer roleNameId);
 
     int batchDelete(Integer[] integers);
 
