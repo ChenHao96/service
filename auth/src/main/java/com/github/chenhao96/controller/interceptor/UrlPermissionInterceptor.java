@@ -4,6 +4,7 @@ import com.github.chenhao96.controller.UsersController;
 import com.github.chenhao96.model.enumeration.HttpStatusEnum;
 import com.github.chenhao96.model.vo.AdminVo;
 import com.github.chenhao96.utils.CollectionUtils;
+import com.github.chenhao96.utils.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +19,10 @@ public class UrlPermissionInterceptor extends AbstractInterceptor {
         if (admin != null && admin.getUrls().size() > 0) {
             String requestUrl = (String) request.getAttribute(RequestInterceptor.SERVLET_PATH_PARAMETER_NAME);
             if (CollectionUtils.isNotEmpty(admin.getUrls())) {
-                if (admin.getUrls().contains(requestUrl)) {
-                    return true;
+                for (String urlItem : admin.getUrls()) {
+                    if (StringUtils.isNotEmpty(urlItem) && urlItem.endsWith(requestUrl)) {
+                        return true;
+                    }
                 }
             }
         }
