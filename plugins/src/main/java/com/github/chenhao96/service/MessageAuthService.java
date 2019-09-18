@@ -1,6 +1,6 @@
 package com.github.chenhao96.service;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 public interface MessageAuthService {
 
@@ -10,5 +10,5 @@ public interface MessageAuthService {
         return true;
     }
 
-    boolean sendVerifyCodeMessage(HttpSession session);
+    boolean sendVerifyCodeMessage(HttpServletRequest request);
 }

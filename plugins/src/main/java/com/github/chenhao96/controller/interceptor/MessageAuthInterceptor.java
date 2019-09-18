@@ -19,13 +19,13 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
         if (StringUtils.isNotEmpty(requestUrl)) {
             if (!messageAuthService.contains(requestUrl)) return true;
             String verifyCode = request.getParameter(MessageAuthService.VERIFY_CODE_KEY);
-            HttpSession session = request.getSession();
             if (StringUtils.isNotEmpty(verifyCode)) {
+                HttpSession session = request.getSession();
                 String cacheCode = (String) session.getAttribute(MessageAuthService.VERIFY_CODE_KEY);
                 if (verifyCode.equals(cacheCode)) return true;
                 responseInterceptorMsg(response, request, -1, "验证失败,请检查验证码!");
             } else {
-                if (messageAuthService.sendVerifyCodeMessage(session)) {
+                if (messageAuthService.sendVerifyCodeMessage(request)) {
                     responseInterceptorMsg(response, request, -403, "验证码发送中...");
                 } else {
                     responseInterceptorMsg(response, request, -1, "验证码发送失败");
