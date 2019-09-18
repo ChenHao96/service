@@ -6,7 +6,9 @@ public interface MessageAuthService {
 
     String VERIFY_CODE_KEY = "verify_code";
 
-    boolean contains(String url);
+    default boolean contains(String url) {
+        return true;
+    }
 
     boolean sendVerifyCodeMessage(HttpSession session);
 }
