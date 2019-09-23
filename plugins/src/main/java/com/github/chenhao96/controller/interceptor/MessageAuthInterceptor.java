@@ -24,12 +24,12 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
         String ip = Utils.getIp(request);
         String requestUrl = (String) request.getAttribute(RequestInterceptor.SERVLET_PATH_PARAMETER_NAME);
         AtomicInteger failCount = record.get(ip);
-        if (failCount != null && failCount.get() > 5) return false;
+        if (failCount != null && failCount.get() >= 10) return false;
+        if (failCount == null) failCount = new AtomicInteger();
         if (StringUtils.isNotEmpty(requestUrl)) {
             if (!messageAuthService.contains(requestUrl)) return true;
             String verifyCode = request.getParameter(MessageAuthService.VERIFY_CODE_KEY);
             if (StringUtils.isNotEmpty(verifyCode)) {
-                if (failCount == null) failCount = new AtomicInteger();
                 HttpSession session = request.getSession();
                 String cacheCode = (String) session.getAttribute(MessageAuthService.VERIFY_CODE_KEY);
                 if (verifyCode.equals(cacheCode)) {
@@ -37,9 +37,6 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
                     failCount.set(0);
                     record.put(ip, failCount);
                     return true;
-                } else {
-                    failCount.incrementAndGet();
-                    record.put(ip, failCount);
                 }
                 responseInterceptorMsg(response, request, -1, "验证失败,请检查验证码!");
             } else {
@@ -50,6 +47,8 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
                 }
             }
         }
+        failCount.incrementAndGet();
+        record.put(ip, failCount);
         return false;
     }
 }
