@@ -35,7 +35,7 @@ public class HitControllerInterceptor extends AbstractInterceptor {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    record.remove(ip);
+                    clearFailLoginCount(ip);
                 }
             }, waitTime);
             response.setStatus(401);

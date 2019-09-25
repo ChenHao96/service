@@ -24,7 +24,7 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
         String ip = Utils.getIp(request);
         String requestUrl = (String) request.getAttribute(RequestInterceptor.SERVLET_PATH_PARAMETER_NAME);
         AtomicInteger failCount = record.get(ip);
-        if (failCount != null && failCount.get() >= 10) return false;
+        if (failCount != null && failCount.get() >= messageAuthService.enableFailCount()) return false;
         if (failCount == null) failCount = new AtomicInteger();
         if (StringUtils.isNotEmpty(requestUrl)) {
             if (!messageAuthService.contains(requestUrl)) return true;

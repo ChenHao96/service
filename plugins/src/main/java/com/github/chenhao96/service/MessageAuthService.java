@@ -11,4 +11,6 @@ public interface MessageAuthService {
     }
 
     boolean sendVerifyCodeMessage(HttpServletRequest request);
+
+    int enableFailCount();
 }
