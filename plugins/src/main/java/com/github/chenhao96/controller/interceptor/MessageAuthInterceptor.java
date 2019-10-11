@@ -22,6 +22,7 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ip = Utils.getIp(request);
+        if (messageAuthService.enablePassCount(ip) > 0) return true;
         String requestUrl = (String) request.getAttribute(RequestInterceptor.SERVLET_PATH_PARAMETER_NAME);
         AtomicInteger failCount = record.get(ip);
         if (failCount != null && failCount.get() >= messageAuthService.enableFailCount()) return false;
