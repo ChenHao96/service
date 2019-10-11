@@ -23,15 +23,14 @@ final public class DateUtil {
         return calendar.getTime();
     }
 
-    private static Calendar getZeroTimeDate(Date time) {
-        long dateTime = time.getTime();
-        dateTime -= dateTime % 86400000;
+    public static Calendar getZeroTimeDate(Date time) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(dateTime);
+        calendar.setTimeInMillis(time.getTime());
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         return calendar;
     }
 
