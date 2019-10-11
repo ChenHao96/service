@@ -1,8 +1,8 @@
 package com.github.chenhao96.controller.interceptor;
 
+import com.github.chenhao96.controller.BaseController;
 import com.github.chenhao96.service.MessageAuthService;
 import com.github.chenhao96.utils.StringUtils;
-import com.github.chenhao96.utils.Utils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ip = Utils.getIp(request);
+        String ip = (String) request.getAttribute(BaseController.CLIENT_IP_KEY);
         if (messageAuthService.enablePassCount(ip) > 0) return true;
         String requestUrl = (String) request.getAttribute(RequestInterceptor.SERVLET_PATH_PARAMETER_NAME);
         AtomicInteger failCount = record.get(ip);
