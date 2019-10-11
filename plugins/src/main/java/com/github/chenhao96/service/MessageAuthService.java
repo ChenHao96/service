@@ -13,8 +13,4 @@ public interface MessageAuthService {
     boolean sendVerifyCodeMessage(HttpServletRequest request);
 
     int enableFailCount();
-
-    int enablePassCount(String ip);
-
-    void clearPassCount(String ip);
 }
