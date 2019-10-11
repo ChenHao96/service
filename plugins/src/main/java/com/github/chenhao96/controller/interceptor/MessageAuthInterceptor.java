@@ -50,6 +50,7 @@ public class MessageAuthInterceptor extends AbstractInterceptor {
         }
         failCount.incrementAndGet();
         record.put(ip, failCount);
+        messageAuthService.clearPassCount(ip);
         return false;
     }
 }
