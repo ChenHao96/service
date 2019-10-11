@@ -21,7 +21,7 @@ public class RequestInterceptor extends AbstractInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ip = Utils.getIPAndPort(request);
+        String ip = Utils.getIp(request);
         int port = request.getRemotePort();
         String requestUrl = request.getServletPath();
         if (StringUtils.isEmpty(requestUrl)) {
