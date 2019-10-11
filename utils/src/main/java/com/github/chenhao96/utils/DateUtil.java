@@ -26,7 +26,6 @@ final public class DateUtil {
     public static Calendar getZeroTimeDate(Date time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time.getTime());
-        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -40,6 +39,7 @@ final public class DateUtil {
 
     public static Date timeNextSecondNewDate(Date time) {
         Calendar calendar = getZeroTimeDate(time);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
         calendar.set(Calendar.MILLISECOND, calendar.get(Calendar.MILLISECOND) - 1);
         return calendar.getTime();
     }
