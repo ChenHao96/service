@@ -40,7 +40,7 @@ final public class DateUtil {
     public static Date timeNextSecondNewDate(Date time) {
         Calendar calendar = getZeroTimeDate(time);
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-        calendar.set(Calendar.MILLISECOND, calendar.get(Calendar.MILLISECOND) - 1);
+        calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) - 1);
         return calendar.getTime();
     }
 
