@@ -1,6 +1,7 @@
 package com.github.chenhao96.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,9 +16,8 @@ import java.io.IOException;
  */
 public class JsonUtils {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-    private static final ObjectMapper stringMapper = new ObjectMapper();
-
+    private static final ObjectMapper mapper = defaultObjectMapper();
+    private static final ObjectMapper stringMapper = defaultObjectStringMapper();
 
     public static String object2Json(Object obj) throws JsonProcessingException {
         return mapper.writeValueAsString(obj);
@@ -39,13 +39,17 @@ public class JsonUtils {
         return stringMapper.writeValueAsString(obj);
     }
 
-    static {
+    public static ObjectMapper defaultObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        stringMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        stringMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        stringMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        stringMapper.configure(com.fasterxml.jackson.core.JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+        return mapper;
+    }
+
+    public static ObjectMapper defaultObjectStringMapper() {
+        ObjectMapper stringMapper = defaultObjectMapper();
+        stringMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+        return stringMapper;
     }
 }
