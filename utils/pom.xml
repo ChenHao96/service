@@ -16,7 +16,7 @@
 
     <properties>
         <aspectjrt.version>1.8.9</aspectjrt.version>
-        <com.fasterxml.version>2.3.0</com.fasterxml.version>
+        <com.fasterxml.version>2.11.0</com.fasterxml.version>
         <aliyun-sdk-oss.version>3.4.2</aliyun-sdk-oss.version>
     </properties>
 
